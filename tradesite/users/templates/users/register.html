@@ -1,0 +1,16 @@
+{% extends "pages/hello.html" %}
+{% block content %}
+<main style="display: flex; flex-direction: column; align-items: center; justify-content: center"  class="form-signin w-100 m-auto">
+  <form style="margin-top: 90px; width: 300px"  action="{% url 'register' %}" method=post>
+    <h1 class="h3 mb-3 fw-normal">Sign up</h1> 
+    <div style="margin: 10px">
+          {% csrf_token %}
+        {% for field in form %}
+            {{field.label}}:
+            {{field}}
+        {% endfor %}
+      </div>
+    <button style="background-color: black; border: solid 0px black" class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+  </form>
+</main>
+{% endblock content %} 
