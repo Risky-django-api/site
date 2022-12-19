@@ -1,0 +1,139 @@
+{% extends "pages/hello.html" %}
+{% block content %}
+
+      {% if user.is_authenticated %}
+
+
+      <form style="display: flex; flex-direction: column; align-items: left; justify-content: left; margin-top: 10px; width: 100%;" action="{% url 'port' %}" method="POST">
+           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Your portfolio</h1>
+                <div class="btn-toolbar mb-2 mb-md-0" style = "width: 60px;">
+                 <div>
+           
+                {% csrf_token %}
+                 {% for field in form2 %}
+                 <b>{{ field.label_tag }}</b> {{ field }}
+                {% endfor %}
+                  </div>
+               </div>
+              </div>
+                
+                                  
+                              <div class="container">
+                                  <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3">
+                                     {% csrf_token %}
+                              {% for field in form  %}
+                               <div class="col-sm-6" placeholder='volume'>
+                     <b>{{ field.label_tag }}</b> {{ field }}
+                                         </div>
+                                     {% endfor %}
+                                </div>
+                                      </div>
+
+          <button style="margin-bottom: 20px; margin-top: 15px; background-color: black; border: solid 0px black;"  class="w-100 btn btn-primary btn-lg" type="submit">Submit</button>
+        </form>
+         
+
+
+      {% if data is not None %}
+
+
+      <div class="table-responsive">
+        <table style="max-height: 1200px; max-width: 2240px; font-size: 16px; border-collapse: collapse; text-align: left; border-radius: 10px;" class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Current price</th>
+              <th scope="col">Max price 24</th>
+              <th scope="col">Min price 24</th>
+              <th scope="col">Change % 24</th>
+              <th scope="col">Total volume</th>
+              <th scope="col">You have</th>
+            </tr>
+          </thead>
+          <tbody>
+           
+            <tr style="border-radius: 10px; padding: 10px; width: 100px;">
+               {% for n in data %}
+              <td >
+           <a class="nav-link" href="{% url 'coin' parameter=n.id  %}"  value="{{ n.id }}">
+                  <img style="max-height: 20px; max-width: 20px; padding: 2px" src= {{ n.image }}>
+                  {{ n.id }} 
+                 </a>  
+              </td>
+              <td>{{ n.price }}</td>
+              <td>{{ n.high_24h }}</td>
+              <td>{{ n.low_24h }}</td>
+              <td>{{ n.market_cap_change_percentage_24h }}%</td>
+              <td>{{ n.total_volume }}</td>
+              <td>{{ n.vol }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div> 
+
+
+            {% if days is 1 %}
+              <h4 style = "margin-top: 30px;">For {{ days }} day</h4>
+            {% else %}
+              <h4 style = "margin-top: 30px;">For {{ days }} days</h4>
+            {% endif %}
+
+        <div style = "margin-top: 10px;">
+
+          <h2>Portfolio volatility</h2>
+                {% if graph1 %}
+            <div style="max-height: 1200px; max-width: 2240px;"> 
+            {{ graph1|safe }}
+                </div>
+              {% endif %}
+      </div>
+
+
+        <h2>Returns</h2>
+      
+
+              {% if graph2 %}
+            <div style="max-height: 1200px; max-width: 2240px;"> 
+            {{ graph2|safe }}
+                </div>
+              {% endif %}
+
+           <h2>Correlation</h2>
+      
+
+              {% if graph3 %}
+            <div style="max-height: 1200px; max-width: 2240px;"> 
+            {{ graph3|safe }}
+                </div>
+              {% endif %}
+
+       <h2>Value at Risk : {{ var }}%</h2>
+        <p style="font-size: 16px;"> VaR with 95% confidence level. 5% - probability of extreme losses greater than VaR. VaR in USD: {{ var_usd }} </p>
+
+          {% if graph4 %}
+        <div style="max-height: 1200px; max-width: 2240px;"> 
+          {{ graph4|safe }}
+            </div>
+          {% endif %} 
+
+     <h2>Expected Shortfall : {{ ES }}%</h2>
+        <p style="font-size: 16px;"> ES with 95% confidence level. The expected return on the portfolio in the worst of cases.</p>
+
+          {% if graph5 %}
+        <div style="max-height: 1200px; max-width: 2240px;"> 
+          {{ graph5|safe }}
+            </div>
+          {% endif %}  
+
+
+          {% endif %}
+        {% else %}
+         
+         <h2>Please sign in</h2>
+
+      {% endif %} 
+
+   
+{% endblock content %}

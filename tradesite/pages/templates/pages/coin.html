@@ -1,0 +1,89 @@
+{% extends "pages/hello.html" %}
+{% block content %}
+
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2"><img style="max-height: 40px; max-width: 40px; padding: 2px" src= {{ image }}> {{ id }} USD</h1>
+              <form action="{% url 'coin' parameter=id  %}" method="POST">
+                <div class="btn-toolbar mb-2 mb-md-0" style = "width: 60px;">
+                 <div>
+           
+                {% csrf_token %}
+                 {% for field in form %}
+                 <b>{{ field.label_tag }}</b> {{ field }}
+                {% endfor %}
+                  </div>
+               </div>
+              </div>
+            </form>
+
+            {% if days is 1 %}
+              <h4>For {{ days }} day</h4>
+            {% else %}
+              <h4>For {{ days }} days</h4>
+            {% endif %}
+
+
+                {% if graph1 %}
+            <div style="max-height: 1200px; max-width: 2240px;"> 
+            {{ graph1|safe }}
+                </div>
+              {% endif %}
+      
+
+
+      <div class="table-responsive">
+        <table style="max-height: 1200px; max-width: 2240px; font-size: 16px; border-collapse: collapse; text-align: left; border-radius: 10px;" class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Current price</th>
+              <th scope="col">Max price 24</th>
+              <th scope="col">Min price 24</th>
+              <th scope="col">Change % 24</th>
+              <th scope="col">Total volume</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-radius: 10px; padding: 10px; width: 100px;">
+              <td ><img style="max-height: 20px; max-width: 20px; padding: 2px" src= {{ image }}>  {{ id }}  </td>
+              <td>{{ price }}</td>
+              <td>{{ high_24h}}</td>
+              <td>{{ low_24h }}</td>
+              <td>{{ market_cap_change_percentage_24h }}%</td>
+              <td>{{ total_volume }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+        <h2>Arithmetic returns</h2>
+      
+
+              {% if graph2 %}
+            <div style="max-height: 1200px; max-width: 2240px;"> 
+            {{ graph2|safe }}
+                </div>
+              {% endif %}
+
+        <h2>Value at Risk : {{ var }}%</h2>
+        <p style="font-size: 16px;"> VaR with 95% confidence level. 5% - probability of extreme losses greater than VaR. </p>
+
+          {% if graph3 %}
+        <div style="max-height: 1200px; max-width: 2240px;"> 
+          {{ graph3|safe }}
+            </div>
+          {% endif %}
+
+      <h2>Expected Shortfall : {{ es }}%</h2>
+        <p style="font-size: 16px;"> ES with 95% confidence level. The expected return on the cryptocurrency in the worst of cases. </p>
+
+          {% if graph4 %}
+        <div style="max-height: 1200px; max-width: 2240px;"> 
+          {{ graph4|safe }}
+            </div>
+          {% endif %}
+
+
+    
+   
+{% endblock content %}
